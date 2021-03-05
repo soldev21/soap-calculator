@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.rest.soap.wrapper.util.Logger.info;
-
 
 @RestController
 public class CalculatorController {
@@ -32,19 +30,16 @@ public class CalculatorController {
 
     @PostMapping("/subtract")
     public int subtract(@RequestBody Subtract subtract){
-        info(subtract);
         return calculatorService.subtract(subtract);
     }
 
     @PostMapping("/multiply")
     public int multiply(@RequestBody Multiply multiply){
-        info(multiply);
         return calculatorService.multiply(multiply);
     }
 
     @PostMapping("/divide")
     public int divide(@RequestBody Divide divide){
-        info(divide);
         return calculatorService.divide(divide);
     }
 }

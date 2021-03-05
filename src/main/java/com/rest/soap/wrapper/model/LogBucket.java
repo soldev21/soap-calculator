@@ -1,8 +1,6 @@
 package com.rest.soap.wrapper.model;
 
 import com.rest.soap.wrapper.util.SequenceGenerator;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.RequestScope;
 
 public class LogBucket {
 
