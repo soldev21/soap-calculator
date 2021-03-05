@@ -1,0 +1,13 @@
+com/rest/soap/wrapper/calc/Divide.class
+com/rest/soap/wrapper/calc/Subtract.class
+com/rest/soap/wrapper/calc/DivideResponse.class
+com/rest/soap/wrapper/calc/SubtractResponse.class
+com/rest/soap/wrapper/Application.class
+com/rest/soap/wrapper/configuration/CalculatorConfiguration.class
+com/rest/soap/wrapper/calc/Multiply.class
+com/rest/soap/wrapper/calc/ObjectFactory.class
+com/rest/soap/wrapper/calcimpl/CalculatorService.class
+com/rest/soap/wrapper/calc/Add.class
+com/rest/soap/wrapper/calc/MultiplyResponse.class
+com/rest/soap/wrapper/calc/package-info.class
+com/rest/soap/wrapper/calc/AddResponse.class
