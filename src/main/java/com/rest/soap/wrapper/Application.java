@@ -1,7 +1,5 @@
 package com.rest.soap.wrapper;
 
-import com.rest.soap.wrapper.calcimpl.CalculatorService;
-import com.rest.soap.wrapper.calcimpl.CalculatorService2;
 import com.rest.soap.wrapper.calcimpl.CalculatorServiceInterface;
 import com.rest.soap.wrapper.entitiy.ParentLogEnt;
 import com.rest.soap.wrapper.repository.ParentLogRepository;
@@ -32,8 +30,8 @@ public class Application implements CommandLineRunner {
 //        System.out.println(calculatorService.subtract(5,1));
 //        System.out.println(calculatorService.multiply(5,2));
 //        System.out.println(calculatorService.divide(10,3));
-        ParentLogEnt logEnt = new ParentLogEnt();
-        logEnt.setInsertDate(new Date());
-        parentLogRepository.save(logEnt);
+//        ParentLogEnt logEnt = new ParentLogEnt();
+//        logEnt.setInsertDate(new Date());
+//        parentLogRepository.save(logEnt);
     }
 }

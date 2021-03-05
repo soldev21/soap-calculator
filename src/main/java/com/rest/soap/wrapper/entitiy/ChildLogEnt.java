@@ -12,7 +12,6 @@ public class ChildLogEnt {
     @GeneratedValue
     private int id;
     private int parentId;
-//    @Column(name = "insert_date")
     private Date insertDate;
     private String value;
 }

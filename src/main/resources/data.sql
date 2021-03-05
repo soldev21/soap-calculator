@@ -9,5 +9,5 @@ CREATE TABLE log_child (
   id INT AUTO_INCREMENT  PRIMARY KEY,
   parent_id int,
   insert_date timestamp,
-  "value" VARCHAR
+  value VARCHAR
 );

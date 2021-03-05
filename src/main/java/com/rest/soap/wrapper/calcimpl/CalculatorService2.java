@@ -1,7 +1,11 @@
 package com.rest.soap.wrapper.calcimpl;
 
 import com.rest.soap.wrapper.calc.*;
+import com.rest.soap.wrapper.entitiy.ChildLogEnt;
+import com.rest.soap.wrapper.entitiy.ParentLogEnt;
 import com.rest.soap.wrapper.model.LogBucket;
+import com.rest.soap.wrapper.repository.ChildLogRepository;
+import com.rest.soap.wrapper.repository.ParentLogRepository;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.json.JSONObject;
@@ -11,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.ws.soap.SoapEnvelope;
 import org.w3c.dom.Document;
@@ -25,83 +30,138 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Date;
 
 import static com.rest.soap.wrapper.util.Logger.info;
+import static com.rest.soap.wrapper.util.Utils.writeAsString;
 
 @Data
+@Component("calc2")
 public class CalculatorService2 implements CalculatorServiceInterface {
 
-    Jaxb2Marshaller marshaller;
-    Jaxb2Marshaller unMarshaller;
-    String defaultUri;
+    private final String defaultUri = "http://www.dneonline.com/calculator.asmx?WSDL";
 
     @Autowired
     RestTemplate restTemplate;
 
+
     @Autowired
-    LogBucket logBucket;
+    ChildLogRepository childLogRepository;
+
+    @Autowired
+    ParentLogRepository parentLogRepository;
 
 
     @SneakyThrows
     @Override
-    public int add(int a, int b) {
-        Add add = new Add();
-        add.setIntA(a);
-        add.setIntB(b);
+    public int add(Add add) {
+
+        ParentLogEnt parentLogEnt = createAndSaveParentLogEnt();
+        int parentId = parentLogEnt.getId();
+        LogBucket logBucket = LogBucket.newInstance();
+        String reqLog = writeAsString(add);
+        createAndSaveChild(reqLog,parentId);
+        logBucket.append(reqLog);
+
         String xml = buildRequest(add);
+
+        createAndSaveChild(xml,parentId);
         logBucket.append(xml);
-//        info(xml);
+
         String res = sendRequestAndReceive(xml);
-//        info(res);
+
+        createAndSaveChild(res,parentId);
         logBucket.append(res);
+
         AddResponse response = new AddResponse();
         response.setAddResult(extractResult(res, "Add"));
-        System.out.println(logBucket.toString());
+
+        info(logBucket.toString());
+
         return response.getAddResult();
     }
 
     @SneakyThrows
     @Override
-    public int subtract(int a, int b) {
-        Subtract subtract = new Subtract();
-        subtract.setIntA(a);
-        subtract.setIntB(b);
+    public int subtract(Subtract subtract) {
+        ParentLogEnt parentLogEnt = createAndSaveParentLogEnt();
+        int parentId = parentLogEnt.getId();
+        LogBucket logBucket = LogBucket.newInstance();
+        String reqLog = writeAsString(subtract);
+        createAndSaveChild(reqLog,parentId);
+        logBucket.append(reqLog);
+
         String xml = buildRequest(subtract);
-        info(xml);
+
+        createAndSaveChild(xml,parentId);
+        logBucket.append(xml);
+
         String res = sendRequestAndReceive(xml);
-        info(res);
+
+        createAndSaveChild(res,parentId);
+        logBucket.append(res);
+
         SubtractResponse response = new SubtractResponse();
         response.setSubtractResult(extractResult(res, "Subtract"));
+
+        info(logBucket.toString());
+
         return response.getSubtractResult();
     }
 
     @SneakyThrows
     @Override
-    public int multiply(int a, int b) {
-        Multiply multiply = new Multiply();
-        multiply.setIntA(a);
-        multiply.setIntB(b);
+    public int multiply(Multiply multiply) {
+        ParentLogEnt parentLogEnt = createAndSaveParentLogEnt();
+        int parentId = parentLogEnt.getId();
+        LogBucket logBucket = LogBucket.newInstance();
+        String reqLog = writeAsString(multiply);
+        createAndSaveChild(reqLog,parentId);
+        logBucket.append(reqLog);
+
         String xml = buildRequest(multiply);
-        info(xml);
+
+        createAndSaveChild(xml,parentId);
+        logBucket.append(xml);
+
         String res = sendRequestAndReceive(xml);
-        info(res);
+
+        createAndSaveChild(res,parentId);
+        logBucket.append(res);
+
         MultiplyResponse response = new MultiplyResponse();
         response.setMultiplyResult(extractResult(res, "Multiply"));
+
+        info(logBucket.toString());
+
         return response.getMultiplyResult();
     }
 
     @SneakyThrows
     @Override
-    public int divide(int a, int b) {
-        Divide divide = new Divide();
-        divide.setIntA(a);
-        divide.setIntB(b);
+    public int divide(Divide divide) {
+        ParentLogEnt parentLogEnt = createAndSaveParentLogEnt();
+        int parentId = parentLogEnt.getId();
+        LogBucket logBucket = LogBucket.newInstance();
+        String reqLog = writeAsString(divide);
+        createAndSaveChild(reqLog,parentId);
+        logBucket.append(reqLog);
+
         String xml = buildRequest(divide);
-        info(xml);
+
+        createAndSaveChild(xml,parentId);
+        logBucket.append(xml);
+
         String res = sendRequestAndReceive(xml);
-        info(res);
+
+        createAndSaveChild(res,parentId);
+        logBucket.append(res);
+
         DivideResponse response = new DivideResponse();
         response.setDivideResult(extractResult(res, "Divide"));
+
+        info(logBucket.toString());
+
         return response.getDivideResult();
     }
 
@@ -137,7 +197,7 @@ public class CalculatorService2 implements CalculatorServiceInterface {
         headers.add("Content-Type", "application/soap+xml");
         headers.add("Accept-Encoding", "gzip, deflate, br");
         HttpEntity<String> entity = new HttpEntity<>(xml, headers);
-        ResponseEntity<String> xmlSource = restTemplate.postForEntity("http://www.dneonline.com/calculator.asmx?WSDL", entity, String.class);
+        ResponseEntity<String> xmlSource = restTemplate.postForEntity(defaultUri, entity, String.class);
         return xmlSource.getBody();
     }
 
@@ -146,4 +206,20 @@ public class CalculatorService2 implements CalculatorServiceInterface {
         JSONObject jsonObj = XML.toJSONObject(responseXml);
         return jsonObj.getJSONObject("Envelope").getJSONObject("Body").getJSONObject(methodName + "Response").getInt(methodName + "Result");
     }
+
+    private ParentLogEnt createAndSaveParentLogEnt(){
+        ParentLogEnt parentLogEnt = new ParentLogEnt();
+        parentLogEnt.setInsertDate(new Date());
+        parentLogRepository.save(parentLogEnt);
+        return parentLogEnt;
+    }
+
+    private void createAndSaveChild(String val, int parentId){
+        ChildLogEnt childLogEnt = new ChildLogEnt();
+        childLogEnt.setInsertDate(new Date());
+        childLogEnt.setParentId(parentId);
+        childLogEnt.setValue(val);
+        childLogRepository.save(childLogEnt);
+    }
+
 }

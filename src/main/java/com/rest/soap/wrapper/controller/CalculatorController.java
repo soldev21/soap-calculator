@@ -4,7 +4,6 @@ import com.rest.soap.wrapper.calc.Add;
 import com.rest.soap.wrapper.calc.Divide;
 import com.rest.soap.wrapper.calc.Multiply;
 import com.rest.soap.wrapper.calc.Subtract;
-import com.rest.soap.wrapper.calcimpl.CalculatorService;
 import com.rest.soap.wrapper.calcimpl.CalculatorServiceInterface;
 import com.rest.soap.wrapper.model.LogBucket;
 import com.rest.soap.wrapper.util.Utils;
@@ -23,8 +22,6 @@ public class CalculatorController {
     final
     CalculatorServiceInterface calculatorService;
 
-    @Autowired
-    LogBucket logBucket;
 
 
     public CalculatorController(@Qualifier("calc2") CalculatorServiceInterface calculatorService) {
@@ -33,25 +30,24 @@ public class CalculatorController {
 
     @PostMapping("/add")
     public int add(@RequestBody Add add){
-        logBucket.append(Utils.writeAsString(add));
-        return calculatorService.add(add.getIntA(),add.getIntB());
+        return calculatorService.add(add);
     }
 
     @PostMapping("/subtract")
     public int subtract(@RequestBody Subtract subtract){
         info(subtract);
-        return calculatorService.subtract(subtract.getIntA(),subtract.getIntB());
+        return calculatorService.subtract(subtract);
     }
 
     @PostMapping("/multiply")
     public int multiply(@RequestBody Multiply multiply){
         info(multiply);
-        return calculatorService.multiply(multiply.getIntA(),multiply.getIntB());
+        return calculatorService.multiply(multiply);
     }
 
     @PostMapping("/divide")
     public int divide(@RequestBody Divide divide){
         info(divide);
-        return calculatorService.divide(divide.getIntA(),divide.getIntB());
+        return calculatorService.divide(divide);
     }
 }

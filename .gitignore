@@ -26,4 +26,4 @@ hs_err_pid*
 
 .idea/vcs.xml
 src/test/
-target/generated-sources/
+target/
